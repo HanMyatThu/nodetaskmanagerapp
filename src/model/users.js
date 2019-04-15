@@ -48,8 +48,12 @@ const UserSchema = new mongoose.Schema({
             type : String,
             required : true
         }
-    }]
-   
+    }],
+    avatar: {
+        type : Buffer
+    }
+},{
+    timestamps : true
 })
 
 // relationship chate
@@ -98,6 +102,7 @@ UserSchema.methods.toJSON =  function(){
 
     delete userObj.password
     delete userObj.tokens
+    delete userObj.avatar
     return userObj
 
 }
@@ -117,7 +122,6 @@ UserSchema.pre('save', async function(next) {
 UserSchema.pre('remove',async function(next){
     const user = this
     await Task.deleteMany({ owner : user._id })
-
 
     next()
 })
